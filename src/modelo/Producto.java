@@ -49,15 +49,5 @@ public class Producto {
 
     public void setProveedor(Proveedor proveedor) {this.proveedor = proveedor;}
 
-    @Override
-    public String toString() {
-        return "ID: " + producto_id +
-                " | Nombre: " + nombre +
-                " | Precio: $" + precio +
-                " | Stock: " + stock +
-                " | Categoría: " + categoria +
-                " | Proveedor: " + (proveedor != null ? proveedor.getProveedor_name() : "N/A");
-    }
-
 
 }
