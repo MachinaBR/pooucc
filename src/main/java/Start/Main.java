@@ -4,25 +4,28 @@ import Interfaz.LoginInterfaz;
 import Interfaz.MenuAdministrador;
 import Modelo.*;
 import Servicios.GestorProveedores;
+import Servicios.GestorVentas;
 import Servicios.Inventario;
 
 import java.util.ArrayList;
 
 public class Main {
     public static ArrayList<Usuario> empleados = new ArrayList<>();
+    public static GestorVentas ventas = new GestorVentas();
+    public static GestorProveedores proveedores;
 
     public static void main(String[] args) {
         Inventario inventario = new Inventario();
         GestorProveedores proveedores = new GestorProveedores();
 
-        // ✅ Cargar usuarios de prueba
+        //Cargar usuarios de prueba
         Administrador admin = new Administrador(1, "Carlos", "Gómez", "López", "3015551234", "admin@tienda.com", "admin123", "ADMIN") {};
         Vendedor vendedor = new Vendedor(2, "Ana", "Martínez", "Ramírez", "3014445678", "vendedor@tienda.com", "venta123", "VENDEDOR") {};
 
         empleados.add(admin);
         empleados.add(vendedor);
 
-        // ✅ Cargar productos de prueba
+       //Cargar productos de prueba
         inventario.agregarProducto(new Producto(1, "Arroz Diana", 2800.0, 100, "Alimentos", "Distribuciones Bogotá"));
         inventario.agregarProducto(new Producto(2, "Arroz Roa", 3000.0, 80, "Alimentos", "Roa S.A."));
         inventario.agregarProducto(new Producto(3, "Arroz con Leche", 3500.0, 40, "Postres", "Dulces Bogotá"));
@@ -33,7 +36,7 @@ public class Main {
         inventario.agregarProducto(new Producto(8, "Gaseosa Pepsi", 3400.0, 45, "Bebidas", "PepsiCo"));
         inventario.agregarProducto(new Producto(9, "Empanada", 1800.0, 200, "Comida rápida", "TiendaCoco S.A."));
         inventario.agregarProducto(new Producto(10, "Empanada de Pollo", 2000.0, 180, "Comida rápida", "TiendaCoco S.A."));
-
+        //Cargar proveedores de prueba
         proveedores.agregarProveedor(new Proveedor(1, "Distribuciones Bogotá", "Luis Gómez", "3105558888", "contacto@distribucionesbogota.com"));
         proveedores.agregarProveedor(new Proveedor(2, "Roa S.A.", "Sandra Roa", "3104447777", "s.roa@roasa.com"));
         proveedores.agregarProveedor(new Proveedor(3, "Dulces Bogotá", "Marcela Dulce", "3001112222", "info@dulcesbogota.com"));
@@ -46,7 +49,7 @@ public class Main {
         proveedores.agregarProveedor(new Proveedor(10, "TiendaCoco S.A.", "Natalia Gómez", "3110001133", "natalia@tiendacoco.com")); // nombre repetido
 
 
-        // ✅ Iniciar sistema
+        // Iniciar sistema
         new LoginInterfaz(empleados, inventario, proveedores);        // O si quieres ir directamente al panel del admin (opcional para pruebas)
         // new MenuAdministrador(admin, inventario, proveedores);
     }

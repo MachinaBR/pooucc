@@ -1,6 +1,8 @@
 package Interfaz;
 
 import Interfaz.Proveedores.ProveedorAdministrador;
+import Interfaz.Ventas.VentaVendedorForm;
+
 import Modelo.Administrador;
 import Servicios.GestorProveedores;
 import Servicios.Inventario;
@@ -39,6 +41,11 @@ public class MenuAdministrador extends JFrame {
             new ProveedorAdministrador(admin, inventario, gestor);
         }));
 
+        panelCentro.add(crearTarjeta("Ventas", () -> {
+            dispose();
+            new VentaVendedorForm(admin, inventario, Start.Main.ventas);
+        }));
+
         panelCentro.add(crearTarjeta("Cerrar Sesión", () -> {
             dispose();
             new LoginInterfaz(Start.Main.empleados, inventario, gestor);
@@ -48,7 +55,7 @@ public class MenuAdministrador extends JFrame {
         setVisible(true);
     }
 
-    // Método que crea tarjetas modernas
+    //
     private JPanel crearTarjeta(String texto, Runnable accion) {
         JPanel tarjeta = new JPanel(new BorderLayout());
         tarjeta.setPreferredSize(new Dimension(180, 120));

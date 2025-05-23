@@ -1,6 +1,7 @@
 package Interfaz;
 
 import Interfaz.Proveedores.ProveedorVendedor;
+import Interfaz.Ventas.VentaVendedorForm;
 import Modelo.Vendedor;
 import Servicios.GestorProveedores;
 import Servicios.Inventario;
@@ -44,11 +45,15 @@ public class MenuVendedor extends JFrame {
             new LoginInterfaz(Start.Main.empleados, inventario, proveedores);
         }));
 
+        panelCentro.add(crearTarjeta("Ventas", () -> {
+            dispose();
+            new VentaVendedorForm(vendedor, inventario, Start.Main.ventas);
+        }));
+
         add(panelCentro, BorderLayout.CENTER);
         setVisible(true);
     }
 
-    // Método para crear tarjetas modernas
     private JPanel crearTarjeta(String texto, Runnable accion) {
         JPanel tarjeta = new JPanel(new BorderLayout());
         tarjeta.setPreferredSize(new Dimension(180, 120));

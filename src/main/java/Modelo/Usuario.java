@@ -1,5 +1,6 @@
 package Modelo;
 import Servicios.GestorProveedores;
+import Servicios.GestorVentas;
 import Servicios.Inventario;
 
 import java.util.List;
@@ -51,7 +52,6 @@ public abstract class Usuario {
     public abstract List<Producto> verProducto(Inventario inventario);
     public abstract Producto buscarProductoPorID(Inventario inventario, int id);
     public abstract List<Producto> buscarProductoPorNombre(Inventario inventario, String nombre);
-    public abstract void generarVenta();
 
     //Interfaz Proveedores
     public abstract  List<Proveedor> verProveedores(GestorProveedores gestor);
@@ -65,6 +65,16 @@ public abstract class Usuario {
     public abstract void agregarProveedor(GestorProveedores gestor, Proveedor proveedor);
     public abstract boolean eliminarProveedor(GestorProveedores gestor, int id);
     public abstract boolean editarProveedor(GestorProveedores gestor, int id, String nombre, String contacto, String telefono, String email);
-
-
+    //-----------------------------------------------------------------------------------
+    //VENTAS
+    public abstract void agregarProductoAlCarrito(Producto producto, int cantidad);
+    public abstract void quitarProductoDelCarrito(int productoId);
+    public abstract double calcularTotalCarrito();
+    public abstract void finalizarVenta(GestorVentas gestorVentas);
+    public abstract List<Venta> verMisVentas(GestorVentas gestorVentas);
+    public abstract List<Venta> verTodasLasVentas(GestorVentas gestorVentas);
+    public abstract Producto buscarProductoParaVentaPorID(Inventario inventario, int id);
+    public abstract List<Producto> buscarProductoParaVentaPorNombre(Inventario inventario, String nombre);
+    public abstract List<ItemVenta> obtenerCarrito();
+    public abstract void quitarProductoDelCarritoPorNombre(String nombreProducto);
 }
