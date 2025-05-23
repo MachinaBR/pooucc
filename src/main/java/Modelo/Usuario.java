@@ -1,6 +1,10 @@
 package Modelo;
+import Servicios.GestorProveedores;
+import Servicios.Inventario;
 
-public abstract class  Usuario {
+import java.util.List;
+
+public abstract class Usuario {
 
     //Atributos protegidos de la superclase
     protected final int usuarioID;
@@ -43,12 +47,24 @@ public abstract class  Usuario {
     public String getEmail(){ return email; }
     public String getRol(){ return rol; }
 
-    //Metodos abstractos
-    public abstract void verProducto();
-    public abstract void verProveedores();
-    public abstract void consultarProducto();
-    public abstract void verResumenVentas();
 
+    public abstract List<Producto> verProducto(Inventario inventario);
+    public abstract Producto buscarProductoPorID(Inventario inventario, int id);
+    public abstract List<Producto> buscarProductoPorNombre(Inventario inventario, String nombre);
+    public abstract void generarVenta();
+
+    //Interfaz Proveedores
+    public abstract  List<Proveedor> verProveedores(GestorProveedores gestor);
+    public abstract Proveedor buscarProveedorPorId(GestorProveedores gestor, int id);
+    public abstract  List<Proveedor>  buscarProveedorPorNombre(GestorProveedores gestor, String nombre);
+    //-------------------------------------------------------------------------------------
+    //Metodos Registringidos (para Administrador)
+    public abstract void agregarProducto(Inventario inventario, Producto producto);
+    public abstract boolean eliminarProducto(Inventario inventario, int id);
+    public abstract boolean editarProducto(Inventario inventario, int id, String nuevoNombre, double nuevoPrecio, int nuevoStock, String nuevaCategoria, String nuevoProveedor);    //Interfaz Proveedores
+    public abstract void agregarProveedor(GestorProveedores gestor, Proveedor proveedor);
+    public abstract boolean eliminarProveedor(GestorProveedores gestor, int id);
+    public abstract boolean editarProveedor(GestorProveedores gestor, int id, String nombre, String contacto, String telefono, String email);
 
 
 }

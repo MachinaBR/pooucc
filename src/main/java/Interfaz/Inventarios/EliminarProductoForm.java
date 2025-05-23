@@ -1,22 +1,21 @@
-package Interfaz.Proveedores;
+package Interfaz.Inventarios;
 
-import Modelo.Proveedor;
-import Servicios.GestorProveedores;
+import Modelo.Producto;
+import Servicios.Inventario;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class EliminarProveedorForm extends JFrame {
-
-    public EliminarProveedorForm(JFrame parent, GestorProveedores gestor) {
-        setTitle("Eliminar Proveedor");
+public class EliminarProductoForm extends JFrame {
+    public EliminarProductoForm(JFrame parent, Inventario inventario) {
+        setTitle("Eliminar Producto");
         setSize(400, 250);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Eliminar Proveedor", SwingConstants.CENTER);
+        JLabel titulo = new JLabel("Eliminar Producto", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         add(titulo, BorderLayout.NORTH);
@@ -25,13 +24,14 @@ public class EliminarProveedorForm extends JFrame {
         panelCampos.setBorder(BorderFactory.createEmptyBorder(20, 40, 10, 40));
         panelCampos.setBackground(Color.WHITE);
 
-        JLabel lblId = new JLabel("ID del proveedor:");
+        JLabel lblId = new JLabel("ID del producto:");
         JTextField txtId = new JTextField();
 
         panelCampos.add(lblId);
         panelCampos.add(txtId);
         add(panelCampos, BorderLayout.CENTER);
 
+        // Botones
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelBotones.setBackground(Color.WHITE);
 
@@ -50,24 +50,24 @@ public class EliminarProveedorForm extends JFrame {
         panelBotones.add(btnCancelar);
         add(panelBotones, BorderLayout.SOUTH);
 
-        // Acción: Eliminar proveedor
+        // Acción: Eliminar producto
         btnEliminar.addActionListener(e -> {
             try {
                 int id = Integer.parseInt(txtId.getText().trim());
-                Proveedor proveedor = gestor.buscarProveedorPorId(id);
-                if (proveedor != null) {
+                Producto producto = inventario.buscarProductoPorID(id);
+                if (producto != null) {
                     int confirm = JOptionPane.showConfirmDialog(this,
-                            "¿Estás seguro de eliminar al proveedor:\n" +
-                                    proveedor.getNombre() + " (ID: " + id + ")?",
+                            "¿Estás seguro de eliminar el producto:\n" +
+                                    producto.getNombre() + " (ID: " + id + ")?",
                             "Confirmar eliminación",
                             JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        gestor.eliminarProveedor(id);
-                        JOptionPane.showMessageDialog(this, "Proveedor eliminado con éxito.");
+                        inventario.eliminarProducto(id);
+                        JOptionPane.showMessageDialog(this, "Producto eliminado con éxito.");
                         dispose();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Proveedor no encontrado.");
+                    JOptionPane.showMessageDialog(this, "Producto no encontrado.");
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "ID inválido.");

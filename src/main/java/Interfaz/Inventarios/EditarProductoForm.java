@@ -1,25 +1,24 @@
-package Interfaz.Proveedores;
+package Interfaz.Inventarios;
 
-import Modelo.Proveedor;
-import Servicios.GestorProveedores;
+import Modelo.Producto;
+import Servicios.Inventario;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class EditarProveedorForm extends JFrame {
-
-    private final JTextField txtIdBuscar, txtNombre, txtContacto, txtTelefono, txtEmail;
+public class EditarProductoForm extends JFrame {
+    private final JTextField txtIdBuscar, txtNombre, txtPrecio, txtStock, txtCategoria, txtProveedor;
     private final JButton btnGuardar;
 
-    public EditarProveedorForm(JFrame parent, GestorProveedores gestor) {
-        setTitle("Editar Proveedor");
+    public EditarProductoForm(JFrame parent, Inventario inventario) {
+        setTitle("Editar Producto");
         setSize(400, 430);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Editar Proveedor", SwingConstants.CENTER);
+        JLabel titulo = new JLabel("Editar Producto", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         add(titulo, BorderLayout.NORTH);
@@ -32,11 +31,12 @@ public class EditarProveedorForm extends JFrame {
         JButton btnBuscar = new JButton("Buscar");
 
         txtNombre = new JTextField();
-        txtContacto = new JTextField();
-        txtTelefono = new JTextField();
-        txtEmail = new JTextField();
+        txtPrecio = new JTextField();
+        txtStock = new JTextField();
+        txtCategoria = new JTextField();
+        txtProveedor = new JTextField();
 
-        panelCampos.add(new JLabel("ID del proveedor:"));
+        panelCampos.add(new JLabel("ID del producto:"));
         JPanel buscarPanel = new JPanel(new BorderLayout(5, 0));
         buscarPanel.setBackground(Color.WHITE);
         buscarPanel.add(txtIdBuscar, BorderLayout.CENTER);
@@ -45,15 +45,18 @@ public class EditarProveedorForm extends JFrame {
 
         panelCampos.add(new JLabel("Nombre:"));
         panelCampos.add(txtNombre);
-        panelCampos.add(new JLabel("Contacto:"));
-        panelCampos.add(txtContacto);
-        panelCampos.add(new JLabel("Teléfono:"));
-        panelCampos.add(txtTelefono);
-        panelCampos.add(new JLabel("Email:"));
-        panelCampos.add(txtEmail);
+        panelCampos.add(new JLabel("Precio:"));
+        panelCampos.add(txtPrecio);
+        panelCampos.add(new JLabel("Cantidad:"));
+        panelCampos.add(txtStock);
+        panelCampos.add(new JLabel("Categoría:"));
+        panelCampos.add(txtCategoria);
+        panelCampos.add(new JLabel("Proveedor:"));
+        panelCampos.add(txtProveedor);
 
         add(panelCampos, BorderLayout.CENTER);
 
+        // Botones inferiores
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelBotones.setBackground(Color.WHITE);
 
@@ -73,19 +76,20 @@ public class EditarProveedorForm extends JFrame {
         panelBotones.add(btnCancelar);
         add(panelBotones, BorderLayout.SOUTH);
 
-        // Acción: Buscar proveedor
+        // Acción: Buscar producto
         btnBuscar.addActionListener(e -> {
             try {
                 int id = Integer.parseInt(txtIdBuscar.getText().trim());
-                Proveedor proveedor = gestor.buscarProveedorPorId(id);
-                if (proveedor != null) {
-                    txtNombre.setText(proveedor.getNombre());
-                    txtContacto.setText(proveedor.getContacto());
-                    txtTelefono.setText(proveedor.getTelefono());
-                    txtEmail.setText(proveedor.getEmail());
+                Producto producto = inventario.buscarProductoPorID(id);
+                if (producto != null) {
+                    txtNombre.setText(producto.getNombre());
+                    txtPrecio.setText(String.valueOf(producto.getPrecio()));
+                    txtStock.setText(String.valueOf(producto.getStock()));
+                    txtCategoria.setText(producto.getCategoria());
+                    txtProveedor.setText(producto.getProveedor());
                     btnGuardar.setEnabled(true);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Proveedor no encontrado.");
+                    JOptionPane.showMessageDialog(this, "Producto no encontrado.");
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "ID inválido.");
@@ -95,18 +99,19 @@ public class EditarProveedorForm extends JFrame {
         // Acción: Guardar cambios
         btnGuardar.addActionListener(e -> {
             try {
-                int id = Integer.parseInt(txtIdBuscar.getText().trim());
+                int id = Integer.parseInt(txtIdBuscar.getText());
                 String nombre = txtNombre.getText().trim();
-                String contacto = txtContacto.getText().trim();
-                String telefono = txtTelefono.getText().trim();
-                String email = txtEmail.getText().trim();
+                double precio = Double.parseDouble(txtPrecio.getText());
+                int stock = Integer.parseInt(txtStock.getText());
+                String categoria = txtCategoria.getText().trim();
+                String proveedor = txtProveedor.getText().trim();
 
-                boolean actualizado = gestor.editarProveedor(id, nombre, contacto, telefono, email);
+                boolean actualizado = inventario.editarProducto(id, nombre, precio, stock, categoria, proveedor);
                 if (actualizado) {
-                    JOptionPane.showMessageDialog(this, "Proveedor actualizado correctamente.");
+                    JOptionPane.showMessageDialog(this, "Producto actualizado correctamente.");
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo actualizar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se pudo actualizar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Verifica los campos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);

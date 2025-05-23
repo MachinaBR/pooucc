@@ -34,6 +34,4 @@ public class Producto {
     public void setStock(int stock) { this.stock = stock; }
     public void setCategoria(String categoria) { this.categoria = categoria; }
     public void setProveedor(String proveedor) { this.proveedor = proveedor; }
-    public void setId(int id) {this.productoId = id;}
-
 }

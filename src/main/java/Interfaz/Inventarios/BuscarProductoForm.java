@@ -1,36 +1,38 @@
-package Interfaz.Proveedores;
+package Interfaz.Inventarios;
 
-import Modelo.Proveedor;
-import Servicios.GestorProveedores;
+import Modelo.Producto;
+import Servicios.Inventario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class BuscarProveedorForm extends JFrame {
+public class BuscarProductoForm extends JFrame {
 
-    private final GestorProveedores gestor;
+    private final Inventario inventario;
     private JTextField txtId;
     private JTextField txtNombre;
     private JTable tablaResultados;
     private DefaultTableModel modeloTabla;
 
-    public BuscarProveedorForm(GestorProveedores gestor) {
-        this.gestor = gestor;
+    public BuscarProductoForm(JFrame parent, Inventario inventario) {
+        this.inventario = inventario;
 
-        setTitle("Buscar Proveedor");
+        setTitle("Buscar Producto");
         setSize(650, 450);
-        setLocationRelativeTo(txtId);
+        setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Buscar Proveedor", SwingConstants.CENTER);
+        // Título
+        JLabel titulo = new JLabel("Buscar Producto", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         titulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         add(titulo, BorderLayout.NORTH);
 
+        // Panel de campos
         JPanel panelCampos = new JPanel(new GridLayout(2, 3, 10, 10));
         panelCampos.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         panelCampos.setBackground(Color.WHITE);
@@ -42,16 +44,17 @@ public class BuscarProveedorForm extends JFrame {
         JButton btnBuscarNombre = crearBoton("Buscar por Nombre");
         JButton btnCerrar = crearBoton("Cerrar");
 
-        panelCampos.add(new JLabel("ID del proveedor:"));
+        panelCampos.add(new JLabel("ID del producto:"));
         panelCampos.add(txtId);
         panelCampos.add(btnBuscarId);
-        panelCampos.add(new JLabel("Nombre del proveedor:"));
+        panelCampos.add(new JLabel("Nombre del producto:"));
         panelCampos.add(txtNombre);
         panelCampos.add(btnBuscarNombre);
 
         add(panelCampos, BorderLayout.NORTH);
 
-        String[] columnas = {"ID", "Nombre", "Contacto", "Teléfono", "Email"};
+        // Tabla resultados
+        String[] columnas = {"ID", "Nombre", "Precio", "Stock", "Categoría", "Proveedor"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaResultados = new JTable(modeloTabla);
         tablaResultados.setRowHeight(24);
@@ -59,12 +62,14 @@ public class BuscarProveedorForm extends JFrame {
         JScrollPane scroll = new JScrollPane(tablaResultados);
         add(scroll, BorderLayout.CENTER);
 
+        // Panel botón cerrar
         JPanel panelCerrar = new JPanel();
         panelCerrar.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
         panelCerrar.setBackground(Color.WHITE);
         panelCerrar.add(btnCerrar);
         add(panelCerrar, BorderLayout.SOUTH);
 
+        // Acciones
         btnBuscarId.addActionListener(e -> buscarPorId());
         btnBuscarNombre.addActionListener(e -> buscarPorNombre());
         btnCerrar.addActionListener(e -> dispose());
@@ -76,13 +81,13 @@ public class BuscarProveedorForm extends JFrame {
         modeloTabla.setRowCount(0);
         try {
             int id = Integer.parseInt(txtId.getText().trim());
-            Proveedor p = gestor.buscarProveedorPorId(id);
+            Producto p = inventario.buscarProductoPorID(id);
             if (p != null) {
                 modeloTabla.addRow(new Object[]{
-                        p.getProveedorId(), p.getNombre(), p.getContacto(), p.getTelefono(), p.getEmail()
+                        p.getProductoId(), p.getNombre(), p.getPrecio(), p.getStock(), p.getCategoria(), p.getProveedor()
                 });
             } else {
-                JOptionPane.showMessageDialog(this, "Proveedor no encontrado.");
+                JOptionPane.showMessageDialog(this, "Producto no encontrado.");
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "ID inválido.");
@@ -96,13 +101,13 @@ public class BuscarProveedorForm extends JFrame {
             JOptionPane.showMessageDialog(this, "Ingresa un nombre para buscar.");
             return;
         }
-        List<Proveedor> resultados = gestor.buscarProveedorPorNombre(nombre);
+        List<Producto> resultados = inventario.buscarProductosPorNombre(nombre);
         if (resultados.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron proveedores con ese nombre.");
+            JOptionPane.showMessageDialog(this, "No se encontraron productos con ese nombre.");
         } else {
-            for (Proveedor p : resultados) {
+            for (Producto p : resultados) {
                 modeloTabla.addRow(new Object[]{
-                        p.getProveedorId(), p.getNombre(), p.getContacto(), p.getTelefono(), p.getEmail()
+                        p.getProductoId(), p.getNombre(), p.getPrecio(), p.getStock(), p.getCategoria(), p.getProveedor()
                 });
             }
         }

@@ -1,38 +1,53 @@
 package Start;
+
 import Interfaz.LoginInterfaz;
+import Interfaz.MenuAdministrador;
 import Modelo.*;
+import Servicios.GestorProveedores;
 import Servicios.Inventario;
-import Servicios.ProveedorServicos;
 
 import java.util.ArrayList;
 
 public class Main {
+    public static ArrayList<Usuario> empleados = new ArrayList<>();
+
     public static void main(String[] args) {
-
-        ArrayList<Usuario> empleados = new ArrayList<>();
-        empleados.add(new Owner(1, "Jhonny","Romero", "Barreto", "3205525486", "jhonnybarreto102@gmail.com", "admin123", "admin" ));
-        empleados.add(new Owner(2, "Juan", "Gomes","juan123","admin"));
-        empleados.add(new Vendedor(3, "Felipe", "Garcia","vendedor123","Vendedor"));
-        empleados.add(new Vendedor(4, "sofia","barrero", "gomes", "3205525486", "jhonnybarreto102@gmail.com", "admin12", "Vendedor"));
-
-        ProveedorServicos proveedorServicos = new ProveedorServicos();
-        ArrayList<Proveedor> proveedores = new ArrayList<>();
-        proveedorServicos.setListaProveedores(proveedores);
-        proveedores.add(new Proveedor(1, "Distribuidora CampoSur", "Laura Mendoza", "3104567890", "ventas@camposur.com"));
-        proveedores.add(new Proveedor(2, "Frutas y Verduras Los Andes", "Carlos Ríos", "3117896543", "andinafruver@losandes.com"));
-        proveedores.add(new Proveedor(3, "Lácteos Colanta", "Andrea Salazar", "3001234567", "contacto@colanta.com"));
-        proveedores.add(new Proveedor(4, "Carnes el Llanero", "Oscar Tovar", "3125556677", "el.lanero@carnes.com"));
-        proveedores.add(new Proveedor(5, "Granos y Cereales La Abundancia", "Marcela Díaz"));
-
         Inventario inventario = new Inventario();
-        ArrayList<Producto> productos = new ArrayList<>();
-        productos.add(new Producto(1, "Arroz Diana", 3200, 100, "Granos", "Distribuidora CampoSur"));
-        productos.add(new Producto(2, "Frijol Rojo", 4200, 80, "Granos", "Granos y Cereales La Abundancia"));
-        productos.add(new Producto(3, "Leche Entera", 2800, 120, "Lácteos", "Lácteos Colanta"));
-        productos.add(new Producto(4, "Tomate Chonto", 1800, 60, "Verduras", "Frutas y Verduras Los Andes"));
-        productos.add(new Producto(5, "Carne de Res x kg", 14500, 30, "Carnes", "Carnes el Llanero"));
-        inventario.setListaProductos(productos);
+        GestorProveedores proveedores = new GestorProveedores();
 
-        //Menu Login
-        new LoginInterfaz(empleados, inventario, proveedorServicos);    }
+        // ✅ Cargar usuarios de prueba
+        Administrador admin = new Administrador(1, "Carlos", "Gómez", "López", "3015551234", "admin@tienda.com", "admin123", "ADMIN") {};
+        Vendedor vendedor = new Vendedor(2, "Ana", "Martínez", "Ramírez", "3014445678", "vendedor@tienda.com", "venta123", "VENDEDOR") {};
+
+        empleados.add(admin);
+        empleados.add(vendedor);
+
+        // ✅ Cargar productos de prueba
+        inventario.agregarProducto(new Producto(1, "Arroz Diana", 2800.0, 100, "Alimentos", "Distribuciones Bogotá"));
+        inventario.agregarProducto(new Producto(2, "Arroz Roa", 3000.0, 80, "Alimentos", "Roa S.A."));
+        inventario.agregarProducto(new Producto(3, "Arroz con Leche", 3500.0, 40, "Postres", "Dulces Bogotá"));
+        inventario.agregarProducto(new Producto(4, "Jabón Rey", 1500.0, 50, "Aseo", "Colombiana de Limpieza"));
+        inventario.agregarProducto(new Producto(5, "Jabón Protex", 2700.0, 30, "Aseo", "Protex Corp."));
+        inventario.agregarProducto(new Producto(6, "Gaseosa Coca-Cola", 3500.0, 70, "Bebidas", "CocaCola FEMSA"));
+        inventario.agregarProducto(new Producto(7, "Gaseosa Postobón", 3200.0, 65, "Bebidas", "Postobón S.A."));
+        inventario.agregarProducto(new Producto(8, "Gaseosa Pepsi", 3400.0, 45, "Bebidas", "PepsiCo"));
+        inventario.agregarProducto(new Producto(9, "Empanada", 1800.0, 200, "Comida rápida", "TiendaCoco S.A."));
+        inventario.agregarProducto(new Producto(10, "Empanada de Pollo", 2000.0, 180, "Comida rápida", "TiendaCoco S.A."));
+
+        proveedores.agregarProveedor(new Proveedor(1, "Distribuciones Bogotá", "Luis Gómez", "3105558888", "contacto@distribucionesbogota.com"));
+        proveedores.agregarProveedor(new Proveedor(2, "Roa S.A.", "Sandra Roa", "3104447777", "s.roa@roasa.com"));
+        proveedores.agregarProveedor(new Proveedor(3, "Dulces Bogotá", "Marcela Dulce", "3001112222", "info@dulcesbogota.com"));
+        proveedores.agregarProveedor(new Proveedor(4, "Colombiana de Limpieza", "Diana Torres", "3018889999", "ventas@colimpieza.com"));
+        proveedores.agregarProveedor(new Proveedor(5, "Protex Corp.", "Carlos Ramírez", "3135556677", "contacto@protex.com"));
+        proveedores.agregarProveedor(new Proveedor(6, "Postobón S.A.", "Laura Coca", "3102223344", "ventas@cocacola.com"));
+        proveedores.agregarProveedor(new Proveedor(7, "Postobón S.A.", "Pedro Postobón", "3129991122", "pp@postobon.com"));
+        proveedores.agregarProveedor(new Proveedor(8, "PepsiCo", "Andrea Pepsi", "3141234567", "contact@pepsico.com"));
+        proveedores.agregarProveedor(new Proveedor(9, "TiendaCoco S.A.", "Juan Pérez", "3110001122", "admin@tiendacoco.com"));
+        proveedores.agregarProveedor(new Proveedor(10, "TiendaCoco S.A.", "Natalia Gómez", "3110001133", "natalia@tiendacoco.com")); // nombre repetido
+
+
+        // ✅ Iniciar sistema
+        new LoginInterfaz(empleados, inventario, proveedores);        // O si quieres ir directamente al panel del admin (opcional para pruebas)
+        // new MenuAdministrador(admin, inventario, proveedores);
+    }
 }

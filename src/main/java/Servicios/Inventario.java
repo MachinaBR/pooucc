@@ -1,84 +1,80 @@
 package Servicios;
+
 import Modelo.Producto;
 import java.util.ArrayList;
+import java.util.List;
+import Modelo.Producto;
+
 public class Inventario {
 
-    private ArrayList<Producto> productos;
+    private List<Producto> listaProductos;
 
+    // Construtor
     public Inventario() {
-        productos = new ArrayList<>();
+        listaProductos = new ArrayList<>();
     }
 
-    public void agregarProducto(Producto producto) {
-        producto.setId(generarNuevoId());
-        for (Producto p : productos) {
-            if(p.getProductoId() == producto.getProductoId()){
-                throw new IllegalArgumentException("El producto ya existe");
+    //Metodo para aceender a los datos de forma segura
+    public List<Producto> getListaProductos() {
+        return listaProductos;
+    }
+
+    public void agregarProducto(Producto recibeProducto) {
+        listaProductos.add(recibeProducto);
+    }
+
+    public Producto buscarProductoPorID(int idbusqueda){
+        for (Producto buscarproducto : listaProductos) {
+            if(buscarproducto.getProductoId() == idbusqueda){
+                return buscarproducto;
             }
         }
-        productos.add(producto);
+        return null;
     }
 
-    public void eliminarProducto(int id) {
-        Producto productoEliminar = null;
-        for (Producto p : productos) {
-            if (p.getProductoId() == id) {
-                productoEliminar = p;
-                break;
+    public List<Producto> buscarProductosPorNombre(String buscarNombre){
+        List<Producto> resultados = new ArrayList<>();
+
+        for (Producto p : listaProductos) {
+            if(p.getNombre().toLowerCase().contains(buscarNombre.toLowerCase())){
+                resultados.add(p);
             }
         }
-        if (productoEliminar != null) {
-            productos.remove(productoEliminar);
-        }
+        return resultados;
     }
 
-    public void editarProducto(int id, String nuevoNombre, double nuevoPrecio, int nuevoStock,
-                               String nuevaCategoria, String nuevoProveedor) {
-        for (Producto p : productos) {
-            if (p.getProductoId() == id) {
+    public boolean eliminarProducto(int id){
+        for (Producto p : listaProductos) {
+            if(p.getProductoId() == id){
+                listaProductos.remove(p);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean editarProducto(int id, String nuevoNombre,double nuevaPrecio, int nuevaCantidad, String nuevaCategoria, String nuevoProveedor){
+        for(Producto p : listaProductos){
+            if(p.getProductoId() == id){
                 p.setNombre(nuevoNombre);
-                p.setPrecio(nuevoPrecio);
-                p.setStock(nuevoStock);
+                p.setPrecio(nuevaPrecio);
+                p.setStock(nuevaCantidad);
                 p.setCategoria(nuevaCategoria);
                 p.setProveedor(nuevoProveedor);
-                return;
+                return true;
             }
-        }
+        }return false;
+
     }
 
-    public Producto buscarProducto(String nombre) {
-        for (Producto p : productos) {
-            if (p.getNombre().equals(nombre)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public Producto buscarProducto(int id) {
-        for (Producto p : productos) {
-            if (p.getProductoId() == id) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<Producto> listaProductoss() {
-        return productos;
-    }
-
-    private int generarNuevoId() {
+    public int generarIdAuto() {
         int maxId = 0;
-        for (Producto p : productos) {
+        for (Producto p : listaProductos) {
             if (p.getProductoId() > maxId) {
                 maxId = p.getProductoId();
             }
         }
         return maxId + 1;
-    }
-    public void setListaProductos(ArrayList<Producto> listaProductos) {
-        productos = listaProductos;
     }
 
 }

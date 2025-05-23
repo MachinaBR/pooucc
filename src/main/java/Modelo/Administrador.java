@@ -5,38 +5,34 @@ import Servicios.Inventario;
 
 import java.util.List;
 
-public abstract class Vendedor extends Usuario {
+public abstract class Administrador extends Usuario {
 
-    public Vendedor(int usuarioID, String nombre, String apellido1, String apellido2,
-                    String telefono, String email, String password, String rol) {
-        super(usuarioID, nombre, apellido1, apellido2, telefono, email, password, rol);
+    public Administrador(int usuarioID, String nombre, String apellido1, String apellido2,
+                         String telefono, String email, String Password, String rol){
+        super(usuarioID,nombre,apellido1,apellido2,telefono,email,Password,rol);
     }
 
-    public Vendedor(int usuarioID, String nombre, String apellido1, String password, String rol) {
+    public Administrador(int usuarioID, String nombre, String apellido1, String password, String rol) {
         super(usuarioID, nombre, apellido1, password, rol);
     }
 
-    // ✅ PERMITIDOS
+    // Implementación de métodos abstractos
+
     @Override
     public List<Producto> verProducto(Inventario inventario) {
         return inventario.getListaProductos();
     }
-
     @Override
     public Producto buscarProductoPorID(Inventario inventario, int id) {
         return inventario.buscarProductoPorID(id);
     }
-
     @Override
     public List<Producto> buscarProductoPorNombre(Inventario inventario, String nombre) {
         return inventario.buscarProductosPorNombre(nombre);
     }
-
     @Override
-    public void generarVenta() {
-        System.out.println("El vendedor puede generar ventas.");
-    }
-
+    public void generarVenta(){System.out.println("Administrador puede generar una venta.");}
+    //------------------------------- PROVEEDOR
     @Override
     public List<Proveedor> verProveedores(GestorProveedores gestor) {
         return gestor.getListaProveedores();
@@ -46,41 +42,36 @@ public abstract class Vendedor extends Usuario {
     public Proveedor buscarProveedorPorId(GestorProveedores gestor, int id) {
         return gestor.buscarProveedorPorId(id);
     }
-
     @Override
     public List<Proveedor> buscarProveedorPorNombre(GestorProveedores gestor, String nombre) {
         return gestor.buscarProveedorPorNombre(nombre);
     }
 
 
-    // ❌ RESTRINGIDOS
+    //Metodos propios
     @Override
-    public void agregarProducto(Inventario inventario, Producto producto) {
-        throw new UnsupportedOperationException("❌ El vendedor no tiene permiso para agregar productos.");
+    public  void agregarProducto(Inventario invetario, Producto recibeProducto){
+        invetario.agregarProducto(recibeProducto);
     }
-
     @Override
     public boolean editarProducto(Inventario inventario, int id, String nuevoNombre, double nuevoPrecio, int nuevoStock, String nuevaCategoria, String nuevoProveedor) {
-        throw new UnsupportedOperationException("❌ El vendedor no puede editar productos.");
+        return inventario.editarProducto(id, nuevoNombre, nuevoPrecio, nuevoStock, nuevaCategoria, nuevoProveedor);
     }
-
     @Override
     public boolean eliminarProducto(Inventario inventario, int id) {
-        throw new UnsupportedOperationException("❌ El vendedor no puede Eliminar productos.");
+        return inventario.eliminarProducto(id);
     }
-
+    //-------------------------------PROVEEDOR
     @Override
     public void agregarProveedor(GestorProveedores gestor, Proveedor proveedor) {
-        throw new UnsupportedOperationException("❌ El vendedor no tiene permiso para agregar proveedores.");
+        gestor.agregarProveedor(proveedor);
     }
-
     @Override
     public boolean eliminarProveedor(GestorProveedores gestor, int id) {
-        throw new UnsupportedOperationException("❌ El vendedor no puede eliminar proveedores.");
+        return gestor.eliminarProveedor(id);
     }
-
     @Override
     public boolean editarProveedor(GestorProveedores gestor, int id, String nombre, String contacto, String telefono, String email) {
-        throw new UnsupportedOperationException("❌ El vendedor no puede editar proveedores.");
+        return gestor.editarProveedor(id, nombre, contacto, telefono, email);
     }
 }
